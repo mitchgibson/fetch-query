@@ -8,7 +8,7 @@ export type FetchQueryError = {
 };
 
 /**
- * FetchQuery is a wrapper around the fetch API that provides a simple interface for making requests.
+ * @description FetchQuery is a wrapper around the fetch API that provides a simple interface for making requests.
  *
  * @example const { error, loading, data } = new FetchQuery<MyThing>('https://jsonplaceholder.typicode.com/todos/1').query();
  *
@@ -60,14 +60,14 @@ export class FetchQuery<T> {
   }
 
   /**
-   * Get the current value of the loading state.
+   * @description Get the current value of the loading state.
    */
   public get loading(): boolean {
     return this._loading;
   }
 
   /**
-   * Add a listener for loading state changes.
+   * @description Add a listener for loading state changes.
    * @param callback
    */
   public onLoadingChange(callback: (loading: boolean) => void): void {
@@ -75,7 +75,7 @@ export class FetchQuery<T> {
   }
 
   /**
-   * Add a listener for response data changes.
+   * @description Add a listener for response data changes.
    * @param callback
    */
   public onDataChange(callback: (data: T | null) => void): void {
@@ -83,7 +83,7 @@ export class FetchQuery<T> {
   }
 
   /**
-   * Add a listener for response error changes.
+   * @description Add a listener for response error changes.
    * @param callback
    */
   public onErrorChange(callback: (error: FetchQueryError | null) => void): void {
@@ -91,7 +91,7 @@ export class FetchQuery<T> {
   }
 
   /**
-   * Set the number of times to retry the request if it fails.
+   * @description Set the number of times to retry the request if it fails.
    * @param maxRetryCount
    */
   public setRetries(maxRetryCount: number): void {
@@ -102,7 +102,7 @@ export class FetchQuery<T> {
   }
 
   /**
-   * Make a request to the url provided in the constructor.
+   * @description Make a request to the url provided in the constructor.
    * @param option { RequestInit }
    * @returns { FetchQuery<T> }
    */
