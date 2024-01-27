@@ -35,6 +35,7 @@ export class FetchQuery<T> {
   private _loading: boolean = false;
   private _maxRetryCount: number = 0;
   private _params: FetchQueryParams = {};
+  private _urlAppendix: string = "";
 
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this._loading);
   private data$: BehaviorSubject<T | null> = new BehaviorSubject<T | null>(this._data);
@@ -42,10 +43,10 @@ export class FetchQuery<T> {
 
   /**
    *
-   * @param url { string | Request}
+   * @param baseUrl { string | Request}
    * @param options { RequestInit }
    */
-  constructor(private url: string | Request, private options?: RequestInit) {}
+  constructor(private baseUrl: string | Request, private options?: RequestInit) {}
 
   /**
    * Get the current value of the response data. Returns null if there is no data.
@@ -130,6 +131,10 @@ export class FetchQuery<T> {
     return searchParams;
   }
 
+  public setUrl(urlAppendix: string): void {
+    this._urlAppendix = urlAppendix;
+  }
+
   /**
    * Make a request to the url provided in the constructor.
    * @param option { RequestInit }
@@ -139,7 +144,7 @@ export class FetchQuery<T> {
     this.updateLoading(true);
     this.updateError(null);
 
-    const url = new URL(this.url.toString());
+    const url = new URL(this._urlAppendix, this.baseUrl.toString());
     url.search = this.prepareSearchParams().toString();
 
     fromFetch(url.toString(), options)

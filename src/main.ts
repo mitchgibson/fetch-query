@@ -1,6 +1,4 @@
 import "./style.css";
-import typescriptLogo from "./typescript.svg";
-import viteLogo from "/vite.svg";
 import { FetchQuery } from "./fetch-query/fetch-query.ts";
 import { FetchQueryIterator } from "./fetch-query/fetch-query-iterator.ts";
 import { ExamplePager } from "./ExamplePager.ts";
