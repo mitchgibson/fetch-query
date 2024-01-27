@@ -56,7 +56,7 @@ document.querySelector<HTMLButtonElement>("#query")!.addEventListener("click", (
     draw();
   }, 3000);
 
-  query.setDebounceTime(1000);
+
   for (let i = 0; i < 5; i++) {
     queryData = query.query();
   }

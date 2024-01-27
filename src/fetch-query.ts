@@ -8,13 +8,17 @@ export type FetchQueryError = {
 };
 
 /**
- * KnakFetch is a wrapper around the fetch API that provides a simple interface for making requests.
+ * FetchQuery is a wrapper around the fetch API that provides a simple interface for making requests.
  *
  * @example const { error, loading, data } = new FetchQuery<MyThing>('https://jsonplaceholder.typicode.com/todos/1').query();
+ * 
+ * console.log(error, loading, data);
  * @example const fetch = new FetchQuery<MyThing>('https://jsonplaceholder.typicode.com/todos/1');
+ * 
  * fetch.onLoading((loading) => console.log(loading));
  * fetch.onData((data) => console.log(data));
  * fetch.onError((error) => console.log(error));
+ * 
  * fetch.query();
  * @example const fetch = new FetchQuery<MyThing>('https://jsonplaceholder.typicode.com/todos/1', { method: 'POST', body: { id: 1 } });
  * const fetch = new FetchQuery<MyThing>('https://jsonplaceholder.typicode.com/todos/1');
