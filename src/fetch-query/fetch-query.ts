@@ -7,6 +7,8 @@ export type FetchQueryError = {
   message: string;
 };
 
+export type FetchQueryParams = Record<string, string | number | boolean | null | undefined>;
+
 /**
  * @description FetchQuery is a wrapper around the fetch API that provides a simple interface for making requests.
  *
@@ -32,6 +34,7 @@ export class FetchQuery<T> {
   private _error: FetchQueryError | null = null;
   private _loading: boolean = false;
   private _maxRetryCount: number = 0;
+  private _params: FetchQueryParams = {};
 
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this._loading);
   private data$: BehaviorSubject<T | null> = new BehaviorSubject<T | null>(this._data);
@@ -83,7 +86,7 @@ export class FetchQuery<T> {
   }
 
   /**
-   * @description Add a listener for response error changes.
+   * Add a listener for response error changes.
    * @param callback
    */
   public onErrorChange(callback: (error: FetchQueryError | null) => void): void {
@@ -91,7 +94,7 @@ export class FetchQuery<T> {
   }
 
   /**
-   * @description Set the number of times to retry the request if it fails.
+   * Set the number of times to retry the request if it fails.
    * @param maxRetryCount
    */
   public setRetries(maxRetryCount: number): void {
@@ -102,14 +105,44 @@ export class FetchQuery<T> {
   }
 
   /**
-   * @description Make a request to the url provided in the constructor.
+   * Set the search params for the request.
+   * @param params
+   */
+  public setSearchParams(params: FetchQueryParams): void {
+    this._params = params;
+  }
+
+  public updateSearchParams(params: FetchQueryParams): void {
+    this._params = { ...this._params, ...params };
+  }
+
+  public getSearchParams(): FetchQueryParams {
+    return { ...this._params };
+  }
+
+  private prepareSearchParams(): URLSearchParams {
+    const searchParams = new URLSearchParams();
+    Object.entries(this._params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        searchParams.append(key, value.toString());
+      }
+    });
+    return searchParams;
+  }
+
+  /**
+   * Make a request to the url provided in the constructor.
    * @param option { RequestInit }
    * @returns { FetchQuery<T> }
    */
   public query(options: RequestInit | undefined = this.options): FetchQuery<T> {
     this.updateLoading(true);
     this.updateError(null);
-    fromFetch(this.url, options)
+
+    const url = new URL(this.url.toString());
+    url.search = this.prepareSearchParams().toString();
+
+    fromFetch(url.toString(), options)
       .pipe(
         take(1),
         switchMap((response) => {

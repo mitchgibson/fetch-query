@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "docs": "typedoc ./src/fetch-query.ts"
+    "docs": "typedoc ./src/fetch-query/**/*"
   },
   "devDependencies": {
     "typedoc": "^0.25.7",
