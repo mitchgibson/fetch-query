@@ -24,36 +24,51 @@ const pager = new ExamplePager(query);
 
 function draw() {
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+  <style>
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="query" type="button">Query</button>
+    <h1 style="margin-bottom: 140px;">Fetch Query Example</h1>
+    <div style="display: flex; flex-direction: row; gap: 8px;">
+      <div class="">
+        <button id="query" type="button">Query</button>
+      </div>
+      <div class="">
+        <button id="nextiteration" type="button">Next Iteration</button>
+      </div>
+      <div class="">
+        <button id="previousiteration" type="button">Previous Interation</button>
+      </div>
+      <div class="">
+        <button id="nextpage" type="button">Next Page</button>
+      </div>
+      <div class="">
+        <button id="previouspage" type="button">Previous Page</button>
+      </div>
     </div>
-    <div class="card">
-      <button id="nextiteration" type="button">Next Iteration</button>
+    
+    <div style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 100px;">
+    ${
+      query.loading
+        ? `<div class="loader"></div>`
+        : `
+          <div>Page: ${query.getSearchParams().page}</div>
+          <div>Error: ${JSON.stringify(query.error)}</div>
+          <div>Data: ${JSON.stringify(query.data)}</div>`
+    }
     </div>
-    <div class="card">
-      <button id="previousiteration" type="button">Previous Interation</button>
-    </div>
-    <div class="card">
-      <button id="nextpage" type="button">Next Page</button>
-    </div>
-    <div class="card">
-      <button id="previouspage" type="button">Previous Page</button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-    <div>Page: ${query.getSearchParams().page}</div>
-    <div>Loading: ${query.loading}</div>
-    <div>Error: ${JSON.stringify(query.error)}</div>
-    <div>Data: ${JSON.stringify(query.data)}</div>
   </div>
 `;
 
@@ -64,7 +79,7 @@ function draw() {
     id = setInterval(() => {
       clearInterval(id);
       draw();
-    }, 1000);
+    }, 700);
     draw();
   }
 
